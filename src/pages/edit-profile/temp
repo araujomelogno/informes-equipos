@@ -1,0 +1,19 @@
+
+
+    <ion-item>
+      <ion-label>Sexo</ion-label>
+      <ion-select [(ngModel)]="sex">
+        <ion-option value="female">Femenino</ion-option>
+        <ion-option value="male">Masculino</ion-option>
+      </ion-select>
+    </ion-item>
+
+
+
+    <ion-item>
+      <ion-label>Departamento</ion-label>
+      <ion-select [(ngModel)]="location">
+        <ion-option value="montevideo">Montevideo</ion-option>
+        <ion-option value="interior">Interior</ion-option>
+      </ion-select>
+    </ion-item>

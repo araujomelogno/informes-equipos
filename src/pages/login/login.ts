@@ -1,36 +1,73 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
-import { NavController } from 'ionic-angular';
+import { AlertController, Loading, LoadingController, NavController } from 'ionic-angular';
 
-import { UserData } from '../../providers/user-data';
 
-import { UserOptions } from '../../interfaces/user-options';
-
-import { TabsPage } from '../tabs-page/tabs-page';
+import { ResetPasswordPage } from '../reset-password/reset-password';
 import { SignupPage } from '../signup/signup';
+import { HomePage } from '../home/home';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
+import { EmailValidator } from '../../validators/EmailValidator';
+import { AuthProvider } from '../../providers/auth/auth';
+import { UserData } from '../../providers/user-data';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-user',
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  login: UserOptions = { username: '', password: '' };
   submitted = false;
 
-  constructor(public navCtrl: NavController, public userData: UserData) { }
+  public loginForm: FormGroup;
+  public loading: Loading;
 
-  onLogin(form: NgForm) {
-    this.submitted = true;
+  constructor(public userData: UserData, public navCtrl: NavController,
+    public loadingCtrl: LoadingController, public alertCtrl: AlertController,
+    public authProvider: AuthProvider, public formBuilder: FormBuilder) {
+    this.loginForm = formBuilder.group({
+      email: ['', Validators.compose([Validators.required,
+      EmailValidator.isValid])],
+      password: ['', Validators.compose([Validators.minLength(6),
+      Validators.required])]
+    });
+  }
 
-    if (form.valid) {
-      this.userData.login(this.login.username);
-      this.navCtrl.push(TabsPage);
+
+  loginUser(): void {
+    if (!this.loginForm.valid) {
+      console.log(this.loginForm.value);
+    } else {
+      this.authProvider.loginUser(this.loginForm.value.email,
+        this.loginForm.value.password)
+        .then((user: any) => {
+          if (this.loading != null)
+            this.loading.dismiss();
+          console.log(user);
+          this.userData.login(user, firebase.database().ref(`/userProfile/${user.uid}`));
+          this.navCtrl.setRoot(HomePage);
+        }, (error: any) => {
+          this.loading.dismiss().then(() => {
+            let alert = this.alertCtrl.create({
+              message: error.message,
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
     }
   }
 
-  onSignup() {
-    this.navCtrl.push(SignupPage);
-  }
+  goToSignup(): void { this.navCtrl.push(SignupPage); }
+
+  goToResetPassword(): void { this.navCtrl.push(ResetPasswordPage); }
+
 }

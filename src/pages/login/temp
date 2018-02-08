@@ -1,0 +1,135 @@
+<ion-list no-lines>
+			<ion-item>
+				<ion-label floating color="primary">Usuario</ion-label>
+				<ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off"
+				 required>
+				</ion-input>
+			</ion-item>
+			<p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
+				Campo requerido
+			</p>
+
+			<ion-item>
+				<ion-label floating color="primary">Password</ion-label>
+				<ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+				</ion-input>
+			</ion-item>
+			<p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+				Campo requerido
+			</p>
+		</ion-list>
+
+
+
+
+<form [formGroup]="loginForm" novalidate>
+		<ion-item>
+			<ion-label stacked>Email</ion-label>
+			<ion-input  type="email" placeholder="Your email address" [class.invalid]="!loginForm.controls.email.valid && loginForm.controls.email.dirty"></ion-input>
+		</ion-item>
+		<ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  && loginForm.controls.email.dirty">
+			<p>Email incorrecto</p>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked>Password</ion-label>
+			<ion-input formControlName="password" type="password" placeholder="Your password" [class.invalid]="!loginForm.controls.password.valid && loginForm.controls.password.dirty"></ion-input>
+		</ion-item>
+		<ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  && loginForm.controls.password.dirty">
+			<p>Your password needs more than 6 characters.</p>
+		</ion-item>
+
+		<button ion-button (click)="onLogin(loginForm)" type="submit" block [disabled]="!loginForm.valid">Login</button>
+
+		<button ion-button (click)="onSignup()" clear>No tiene usuario?  Registrarse</button>
+	</form>
+
+
+
+
+
+
+	*^*
+	import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import {  AlertController, Loading, LoadingController, NavController } from 'ionic-angular';
+
+import { UserOptions } from '../../interfaces/user-options';
+
+import { SignupPage } from '../signup/signup';
+import { HomePage } from '../home/home';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
+import { EmailValidator } from '../../validators/EmailValidator';
+import { AuthProvider } from '../../providers/auth/auth';
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html'
+})
+export class LoginPage {
+  login: UserOptions = { username: '', password: '' };
+  submitted = false;
+  public loginForm: FormGroup;
+  public loading: Loading;
+
+  constructor(public navCtrl: NavController,
+    public loadingCtrl: LoadingController, public alertCtrl: AlertController,
+    public authProvider: AuthProvider, public formBuilder: FormBuilder) {
+
+    this.loginForm = formBuilder.group({
+      email: ['', Validators.compose([Validators.required,
+      EmailValidator.isValid])],
+      password: ['', Validators.compose([Validators.minLength(6),
+      Validators.required])]
+    });
+  }
+
+  onLogin(form: NgForm) {
+    this.submitted = true;
+
+    if (form.valid) {
+      this.navCtrl.setRoot(HomePage);
+    }
+  }
+
+
+  loginUser(): void {
+    if (!this.loginForm.valid) {
+      console.log(this.loginForm.value);
+    } else {
+      this.authProvider.loginUser(this.loginForm.value.email,
+        this.loginForm.value.password)
+        .then(authData => {
+          this.loading.dismiss().then(() => {
+            console.log(authData);
+            this.navCtrl.setRoot(HomePage);
+            
+          });
+        }, error => {
+          this.loading.dismiss().then(() => {
+            let alert = this.alertCtrl.create({
+              message: error.message,
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
+    }
+  }
+
+  goToSignup(): void { this.navCtrl.push(SignupPage); }
+
+  goToResetPassword(): void { this.navCtrl.push('reset-password'); }
+  onSignup() {
+    this.navCtrl.push(SignupPage);
+  }
+}

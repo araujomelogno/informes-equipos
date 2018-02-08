@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Equipos Pregunta</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding block>
+  <ion-card *ngFor="let survey of surveyList" (click)="surveyClicked(survey)">
+    <ion-card-header>
+      {{survey.title}}
+    </ion-card-header>
+    <ion-card-content>
+      {{survey.description}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

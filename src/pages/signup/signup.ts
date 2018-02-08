@@ -1,31 +1,73 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-
-import { NavController } from 'ionic-angular';
-
+import {
+  IonicPage,
+  NavController,
+  Loading,
+  LoadingController,
+  AlertController
+} from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth/auth';
+import { EmailValidator } from '../../validators/EmailValidator';
+import { LoginPage } from '../login/login';
 import { UserData } from '../../providers/user-data';
-
-import { UserOptions } from '../../interfaces/user-options';
-
-import { TabsPage } from '../tabs-page/tabs-page';
-
-
+@IonicPage({
+  name: 'signup'
+})
 @Component({
-  selector: 'page-user',
-  templateUrl: 'signup.html'
+  selector: 'page-signup',
+  templateUrl: 'signup.html',
 })
 export class SignupPage {
-  signup: UserOptions = { username: '', password: '' };
-  submitted = false;
+  public signupForm: FormGroup;
+  loading: Loading;
+  constructor(public userData: UserData, public navCtrl: NavController, public authProvider: AuthProvider,
+    public formBuilder: FormBuilder, public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController) {
 
-  constructor(public navCtrl: NavController, public userData: UserData) {}
+    this.signupForm = formBuilder.group({
+      email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
+      password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+    });
+  }
+  signupUser() {
+    if (!this.signupForm.valid) {
+      console.log(this.signupForm.value);
+    } else {
+      this.authProvider.signupUser(this.signupForm.value.email,
+        this.signupForm.value.password)
+        .then(() => {
+          this.loading.dismiss().then(() => {
+            let alert = this.alertCtrl.create({
+              message: 'Usuario registrado con éxito',
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present().then(() => {
+              this.navCtrl.setRoot(LoginPage);
+            });
 
-  onSignup(form: NgForm) {
-    this.submitted = true;
-
-    if (form.valid) {
-      this.userData.signup(this.signup.username);
-      this.navCtrl.push(TabsPage);
+          });
+        }, (error) => {
+          this.loading.dismiss().then(() => {
+            let alert = this.alertCtrl.create({
+              message: error.message,
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        });
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
     }
   }
 }

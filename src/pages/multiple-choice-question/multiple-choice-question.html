@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Equipos Pregunta</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+
+<ion-content padding block>
+  <h1>{{surveyHolder.currentQuestion.title}}</h1>
+  <img *ngIf="surveyHolder.currentQuestion.showImage" src="data:image/png;base64,{{surveyHolder.currentQuestion.image}}" class="photo"
+    width="100%" />
+  <video *ngIf="surveyHolder.currentQuestion.showVideo" width="100%" controls="controls" preload="metadata" autoplay="autoplay"
+    webkit-playsinline="webkit-playsinline" class="videoPlayer">
+    <source src="{{surveyHolder.currentQuestion.videoUrl}}" type="video/mp4" />
+  </video>
+  <p>
+    {{surveyHolder.currentQuestion.content}}
+  </p>
+
+
+
+  <ion-list radio-group>
+    <ion-select [(ngModel)]="surveyHolder.currentQuestion.answer" multiple="true">
+      <ion-option *ngFor="let item of options" value="{{item.key}}">{{item.value}}</ion-option>
+    </ion-select>
+  </ion-list>
+
+
+
+
+
+  <ion-fab left bottom>
+    <button ion-fab color="light" fab-bottom fab-left class="fab-footer" (click)="prev()">
+    <ion-icon name="arrow-back"></ion-icon>
+  </button>
+  </ion-fab>
+  <ion-fab right bottom>
+    <button ion-fab color="light" fab-bottom fab-right class="fab-footer" (click)="next()">
+    <ion-icon name="arrow-forward"></ion-icon>
+  </button>
+  </ion-fab>
+</ion-content>

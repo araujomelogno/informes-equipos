@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Catálogo de premios</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card *ngFor="let r of catalog">
+
+
+
+    <ion-item>
+      <h2>{{r.tittle}}</h2>
+      <h3>{{r.points}} Puntos</h3>
+    </ion-item>
+
+    <img src="assets/img/appicon.png">
+
+    <ion-card-content>
+      <p>{{r.description}}</p>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col center text-center>
+        <button ion-button  small block (click)="select(r)">
+          <div>Canjear</div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

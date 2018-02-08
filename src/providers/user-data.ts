@@ -3,17 +3,84 @@ import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
+import firebase from 'firebase';
 
 @Injectable()
 export class UserData {
   _favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
+  public userProfile: firebase.database.Reference;
+  public currentUser: firebase.User;
 
   constructor(
     public events: Events,
     public storage: Storage
   ) {}
+
+  getUserProfile(): firebase.database.Reference {
+    return this.userProfile;
+  }
+
+  updateName(firstName: string, lastName: string): Promise<void> {
+    return this.userProfile.update({
+      firstName: firstName,
+      lastName: lastName,
+    });
+  }
+
+
+  updateDOB(birthDate: string): Promise<any> {
+    return this.userProfile.update({
+      birthDate: birthDate,
+    });
+  }
+
+
+  updateSex(sex: string): Promise<any> {
+    return this.userProfile.update({
+      sex: sex,
+    });
+  }
+
+
+
+  updateLocation(location: string): Promise<any> {
+    return this.userProfile.update({
+      location: location,
+    });
+  }
+
+
+  updateEmail(newEmail: string, password: string): Promise<any> {
+    const credential = firebase.auth.EmailAuthProvider
+      .credential(<string>this.currentUser.email, password);
+
+    return this.currentUser.reauthenticateWithCredential(credential).then(() => {
+      this.currentUser.updateEmail(newEmail).then(() => {
+        this.userProfile.update({ email: newEmail });
+      });
+    });
+  }
+
+  updatePassword(newPassword: string, oldPassword: string): Promise<any> {
+    const credential = firebase.auth.EmailAuthProvider
+      .credential(<string>this.currentUser.email, oldPassword);
+
+    return this.currentUser.reauthenticateWithCredential(credential).then(() => {
+      this.currentUser.updatePassword(newPassword).then(() => {
+        console.log("Password Changed");
+      }, error => {
+        console.log(error);
+      });
+    });
+  }
+
+  getCurrentUser(): firebase.User {
+    return this.currentUser;
+
+  }
+
 
   hasFavorite(sessionName: string): boolean {
     return (this._favorites.indexOf(sessionName) > -1);
@@ -29,13 +96,17 @@ export class UserData {
       this._favorites.splice(index, 1);
     }
   };
-
-  login(username: string): void {
+ 
+  login(user: firebase.User, up: firebase.database.Reference ): void {
+    this.currentUser = user;
+    this.userProfile = up;
     this.storage.set(this.HAS_LOGGED_IN, true);
-    this.setUsername(username);
+    //let email: any = user.email != null ? user.email : '';
+    //this.setUsername(email);
     this.events.publish('user:login');
   };
 
+  
   signup(username: string): void {
     this.storage.set(this.HAS_LOGGED_IN, true);
     this.setUsername(username);

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "332351806740",
+    "firebase_url": "https://equipospregunta.firebaseio.com",
+    "project_id": "equipospregunta",
+    "storage_bucket": "equipospregunta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332351806740:android:c9135d1157db6919",
+        "android_client_info": {
+          "package_name": "uy.com.equipos.equipospregunta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332351806740-2kep4ria8jlqt6g4ahtk6b4gha4qf3t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKiwmnNa5mjErW3TMb12PS6sxb17DOikk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
