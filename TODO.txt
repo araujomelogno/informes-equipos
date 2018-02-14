@@ -1,0 +1,36 @@
+linkd de notificaciones 
+http://tphangout.com/ionic-2-push-notifications-with-firebase/
+
+
+
+
+fijarse si anda este 
+https://github.com/fechanique/cordova-plugin-fcm
+
+tratar de bajar al 1.4.5 
+borre esto 
+para hacer el package build en ios 
+<plugin name="phonegap-plugin-push" spec="^1.10.5">
+        <variable name="SENDER_ID" value="" />
+    </plugin>
+    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
+    
+
+
+el TODO viejo 
+A nivel de App:
+- REcibir push notifications
+- Hcer vista de gamification 
+- logica de saltos 
+
+A nivel de servidor: 
+- Definir push notifications
+- Definir conexxion a mongoDB 
+- Exportar la base 
+- guardar encuesta 
+- guardar estudios 
+- Asociar panelistas 
+- Ver estado del panel 
+-
+
+
