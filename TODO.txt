@@ -1,7 +1,12 @@
+VER ESTE 
+https://blog.ng-classroom.com/blog/ionic2/ionic-and-onesignal/?utm_source=rss&utm_medium=push_notification&utm_campaign=rss_pushcrew&pushcrew_powered=1
+
 linkd de notificaciones 
 http://tphangout.com/ionic-2-push-notifications-with-firebase/
 
 
+la pagina de phonegap ionic native push 
+https://github.com/phonegap/phonegap-plugin-push
 
 
 fijarse si anda este 
@@ -33,4 +38,18 @@ A nivel de servidor:
 - Ver estado del panel 
 -
 
+
+one signal para ios
+https://blog.ng-classroom.com/blog/ionic2/ionic-and-onesignal-for-ios/
+one signal para android 
+https://blog.ng-classroom.com/blog/ionic2/ionic-and-onesignal/
+
+otros
+http://blog.adityapsingh.com/2016/04/01/setup-ios-push-notifications-for-ionic-cordova-apps/
+http://blog.adityapsingh.com/2016/04/01/setup-ios-push-notifications-for-ionic-cordova-apps/
+
+
+
+plugin push 
+https://github.com/arnesson/cordova-plugin-firebase
 
