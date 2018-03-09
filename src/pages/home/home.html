@@ -9,7 +9,7 @@
 
 
 <ion-content padding block>
-  <ion-card *ngFor="let survey of surveyList" (click)="surveyClicked(survey)">
+  <ion-card *ngFor="let survey of surveyList" (click)="reportClicked(survey)">
     <ion-card-header>
       {{survey.title}}
     </ion-card-header>

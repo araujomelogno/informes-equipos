@@ -10,24 +10,12 @@ import { Storage } from '@ionic/storage';
 import { LoginPage } from '../pages/login/login';
 //import { MapPage } from '../pages/map/map';
 import { HomePage } from '../pages/home/home';
-//import { SignupPage } from '../pages/signup/signup'; 
-import { CompletedSurveysPage } from '../pages/completed-surveys/completed-surveys';
-
-import { PausedSurveysPage } from '../pages/paused-surveys/paused-surveys';
-import { TutorialPage } from '../pages/tutorial/tutorial';
-//import { SchedulePage } from '../pages/schedule/schedule'; 
-//import { SpeakerListPage } from '../pages/speaker-list/speake ;
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
-import { SurveyHolder } from '../services/SurveyHolder';
+  
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
 import { AuthProvider } from '../providers/auth/auth';
 import firebase from 'firebase';
-
-import { CatalogViewPage } from '../pages/catalog-view/catalog-view';
-import { PrizeListPage } from '../pages/prize-list/prize-list';
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
-
+ 
 export interface PageInterface {
   title: string;
   name: string;
@@ -51,26 +39,15 @@ export class ConferenceApp {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageInterface[] = [
-    //{ title: 'Schedule', name: 'TabsPage', component: TabsPage, tabComponent: SchedulePage, index: 0, icon: 'calendar' },
-    //{ title: 'Speakers', name: 'TabsPage', component: TabsPage, tabComponent: SpeakerListPage, index: 1, icon: 'contacts' },
-    //{ title: 'Map', name: 'TabsPage', component: TabsPage, tabComponent: MapPage, index: 2, icon: 'map' },
-    //{ title: 'About', name: 'TabsPage', component: TabsPage, tabComponent: AboutPage, index: 3, icon: 'information-circle' },
-    //{ title: 'Home', name: 'HomePage', component: HomePage, tabComponent: HomePage, index: 3, icon: 'information-circle' }
+    //{ title: 'Schedule', name: 'TabsPage', component: TabsPage, tabComponent: SchedulePage, index: 0, icon: 'calendar' }, 
   ];
   loggedInPages: PageInterface[] = [
-    { title: 'Home', name: 'HomePage', component: HomePage, icon: 'home' },
-    { title: 'Editar perfil', name: 'EditProfilePage', component: EditProfilePage, icon: 'contact' },
-    { title: 'Encuestas completas', name: 'CompletedSurveysPage', component: CompletedSurveysPage, icon: 'clipboard' },
-    { title: 'Encuestas pausadas', name: 'PausedSurveysPage', component: PausedSurveysPage, icon: 'clock' },
-    { title: 'Mis premios', name: 'PrizeListPage', component: PrizeListPage, icon: 'cash' },
-    { title: 'Catálogo de premios', name: 'CatalogViewPage', component: CatalogViewPage, icon: 'book' }
+    { title: 'Home', name: 'HomePage', component: HomePage, icon: 'home' }
   ];
 
 
   loggedOutPages: PageInterface[] = [
-    // { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'log-in' },
-    // { title: 'Support', name: 'SupportPage', component: SupportPage, icon: 'help' },
-    //{ title: 'Signup', name: 'SignupPage', component: SignupPage, icon: 'person-add' }
+    // { title: 'Login', name: 'LoginPage', component: LoginPage, icon: 'log-in' }
   ];
   rootPage: any;
 
@@ -83,31 +60,19 @@ export class ConferenceApp {
     public confData: ConferenceData,
     public storage: Storage,
     public alertCtrl: AlertController,
-    public splashScreen: SplashScreen,
-    public surveyHolder: SurveyHolder, public push: Push
+    public splashScreen: SplashScreen 
   ) {
 
     firebase.initializeApp({
-      apiKey: "AIzaSyDJpHa4izPVX6iU9w7YDBJEOpnmCrCDZwM",
-      authDomain: "equipospregunta.firebaseapp.com",
-      databaseURL: "https://equipospregunta.firebaseio.com",
-      projectId: "equipospregunta",
-      storageBucket: "equipospregunta.appspot.com",
-      messagingSenderId: "332351806740"
+      apiKey: "AIzaSyAZ-xEeNt1rO_GjDuW7Y5thfSw8UWsXbJQ",
+      authDomain: "informes-equipos-consultores.firebaseapp.com",
+      databaseURL: "https://informes-equipos-consultores.firebaseio.com",
+      projectId: "informes-equipos-consultores",
+      storageBucket: "informes-equipos-consultores.appspot.com",
+      messagingSenderId: "323003856262"
     });
 
-
-    /*
-    this.storage.get('hasSeenTutorial')
-      .then((hasSeenTutorial) => {
-        if (hasSeenTutorial) {
-          this.rootPage = LoginPage;
-        } else {
-          this.rootPage = LoginPage;
-        }
-        this.platformReady()
-      });
-    */
+ 
 
 
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -122,15 +87,16 @@ export class ConferenceApp {
         unsubscribe();
 
       }
-      this.platformReady()
-
-      this.surveyHolder.setNav(this.nav);
+ 
+      this.platformReady();
     });
+
 
     // load the conference data
     confData.load();
 
     this.listenToLoginEvents();
+
 
   }
 
@@ -162,11 +128,7 @@ export class ConferenceApp {
       this.userData.logout();
     }
   }
-
-  openTutorial() {
-    this.nav.setRoot(TutorialPage);
-  }
-
+ 
   listenToLoginEvents() {
     this.events.subscribe('user:login', () => {
       this.enableMenu(true);
@@ -191,100 +153,36 @@ export class ConferenceApp {
     this.platform.ready().then(() => {
       this.pushsetup();
       this.splashScreen.hide();
+
+
     });
   }
 
   pushsetup() {
-    const options: PushOptions = {
-      android: { 
-        senderID:'332351806740'
-      },
-      ios: {
-        alert: 'true',
-        badge: true,
-        sound: 'false'
-      },
-      windows: {}
-    };
 
-    const pushObject: PushObject = this.push.init(options);
+    if (this.platform.is('cordova')) {
 
-    pushObject.on('notification').subscribe((notification: any) => {
-      if (notification.additionalData.foreground) {
+      var notificationOpenedCallback = function (jsonData) {
+        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
         let youralert = this.alertCtrl.create({
           title: 'New Push notification',
-          message: notification.message
+          message: JSON.stringify(jsonData)
         });
         youralert.present();
-      }
-    });
+      };
+      window["plugins"].OneSignal
+        .startInit("b8679d08-2518-4794-96bc-e006655c96bd", "332351806740")
 
-    pushObject.on('registration').subscribe((registration: any) => {
-      alert(registration.registrationId);
-    });
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
 
-    pushObject.on('error').subscribe(error => alert('Error with Push plugin' + error));
+    }
   }
   logout() {
     this.authProvider.logoutUser();
     this.nav.setRoot(LoginPage);
   }
-
-  pauseSurvey() {
-    let alert = this.alertCtrl.create({
-      title: 'Desea pausar la encuesta?',
-      subTitle: 'Podrá seguir respondiendo la encuesta luego.',
-      buttons: [{
-        text: 'Si',
-        handler: () => {
-          this.menu.enable(false, 'surveyMenu');
-          this.menu.enable(true, 'loggedInMenu');
-          let surveyData = this.surveyHolder.getSurveyDataToLocallyPersist();
-          this.storage.set(<string>surveyData.survey.title, surveyData);
-          this.storage.get('surveyList').then((value) => {
-            if (!value) {
-              let surveyList: { surveyName: string, pausedDate: Date }[] = [];
-              surveyList.push({ surveyName: <string>surveyData.survey.title, pausedDate: new Date() });
-              this.storage.set('surveyList', surveyList);
-            } else {
-              let surveyList: { surveyName: string, pausedDate: Date }[] = value;
-              surveyList.push({ surveyName: <string>surveyData.survey.title, pausedDate: new Date() });
-              this.storage.set('surveyList', surveyList);
-            }
-          });
-
-
-          this.nav.setRoot(HomePage);
-        }
-      }, {
-        text: 'No',
-        role: 'cancel'
-      }
-      ]
-    });
-    alert.present();
-  }
-
-  abortSurvey() {
-    let alert = this.alertCtrl.create({
-      title: 'Desea abortar la encuesta?',
-      subTitle: 'Si aborta la encuesta se perderan las respuestas ingresadas.',
-      buttons: [{
-        text: 'Si',
-        handler: () => {
-          this.menu.enable(false, 'surveyMenu');
-          this.menu.enable(true, 'loggedInMenu');
-          this.nav.setRoot(HomePage);
-        }
-      }, {
-        text: 'No',
-        role: 'cancel'
-      }
-      ]
-    });
-    alert.present();
-  }
-
+ 
   isActive(page: PageInterface) {
     let childNav = this.nav.getActiveChildNavs()[0];
 

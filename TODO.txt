@@ -1,27 +1,3 @@
-VER ESTE 
-https://blog.ng-classroom.com/blog/ionic2/ionic-and-onesignal/?utm_source=rss&utm_medium=push_notification&utm_campaign=rss_pushcrew&pushcrew_powered=1
-
-linkd de notificaciones 
-http://tphangout.com/ionic-2-push-notifications-with-firebase/
-
-
-la pagina de phonegap ionic native push 
-https://github.com/phonegap/phonegap-plugin-push
-
-
-fijarse si anda este 
-https://github.com/fechanique/cordova-plugin-fcm
-
-tratar de bajar al 1.4.5 
-borre esto 
-para hacer el package build en ios 
-<plugin name="phonegap-plugin-push" spec="^1.10.5">
-        <variable name="SENDER_ID" value="" />
-    </plugin>
-    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
-    
-
-
 el TODO viejo 
 A nivel de App:
 - REcibir push notifications
@@ -53,3 +29,55 @@ http://blog.adityapsingh.com/2016/04/01/setup-ios-push-notifications-for-ionic-c
 plugin push 
 https://github.com/arnesson/cordova-plugin-firebase
 
+
+
+
+
+pasos para la construcción 
+
+onepush android app id 
+b8679d08-2518-4794-96bc-e006655c96bd
+
+ios provisionator password :ewjefwvjqm
+
+*****
+ionic cordova plugin add onesignal-cordova-plugin
+npm install --save @ionic-native/onesignal
+
+*****
+set java 8
+alias java8="export JAVA_HOME=$(/usr/libexec/java_home -v 1.8) && java -version"
+*********************************
+downgrade graddle at 2.1.4
+brew tap homebrew/versions
+brew search gradle
+brew install gradle@2.14
+gradle --version
+brew link --overwrite gradle@2.14
+gradle --version
+*********************************
+push en one -signal 
+https://documentation.onesignal.com/docs/ionic-sdk-setup
+el de abajo creo que no
+https://blog.ng-classroom.com/blog/ionic2/ionic-and-onesignal/?utm_source=rss&utm_medium=push_notification&utm_campaign=rss_pushcrew&pushcrew_powered=1
+
+**********************************
+correr con sudo 
+
+ionic cordova build android --prod --release
+ionic cordova build ios --prod --release
+******************************
+ para IOS 
+ se sigue las instrucciones de  
+ https://documentation.onesignal.com/docs/ionic-sdk-setup
+ y en xcode 
+ se hace el Archyve . 
+ tener en cuenta que  el dispositivo a elegir tiene que ser ios genérico 
+
+ para andorid se tiene que hacer el sign de la app 
+ https://ionicframework.com/docs/intro/deploying/
+ 
+
+
+ para hacer el sign de android el jks que se usa es EquiposConsultores.jks el alias es equiposconsultores 
+ y el password es m4dyt3l
